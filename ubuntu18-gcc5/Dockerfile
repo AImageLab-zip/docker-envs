@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y wget \
     && update-alternatives --install /usr/bin/cmake cmake /home/cmake-3.14.3/bin/cmake 10 \
     && update-alternatives --install /usr/bin/ctest ctest /home/cmake-3.14.3/bin/ctest 10 \
     && update-alternatives --install /usr/bin/cpack cpack /home/cmake-3.14.3/bin/cpack 10 \
-    && apt-get remove -y wget
+    && apt-get remove -y wget \
+    && apt-get install libprotobuf8 libprotobuf-c0 libprotoc8
     
 RUN apt-get install -y make git
