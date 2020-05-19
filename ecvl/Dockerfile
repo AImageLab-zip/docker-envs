@@ -1,4 +1,4 @@
-FROM dhealth/eddl-toolkit:0.4.3
+FROM dhealth/eddl-toolkit:0.6.0
 # eddl-toolkit has eddl, git, cmake, make
 
 #needed curl, openslide
@@ -13,25 +13,47 @@ RUN apt install -y openslide-tools curl \
     && cd opencv-3.4.9 \
     && mkdir build \
     && cd build \
-    && cmake \
-    -D BUILD_SHARED_LIBS=OFF \
-    -D CMAKE_INSTALL_PREFIX=`pwd`/install \
-    -D BUILD_LIST=core,imgproc,imgcodecs,photo,calib3d \
-    -D BUILD_opencv_java_bindings_generator=OFF \
-    -D BUILD_opencv_python3=OFF \
-    -D BUILD_opencv_python_bindings_generator=OFF \
-    -D BUILD_opencv_python_tests=OFF \
-    -D BUILD_JPEG=ON \
-    -D BUILD_PNG=ON \
-    -D BUILD_TIFF=ON \
-    -D BUILD_DOCS=OFF \
-    -D BUILD_TESTS=OFF \
-    -D BUILD_PERF_TESTS=OFF \
-    -D CMAKE_BUILD_TYPE=Release \
-    -D INSTALL_C_EXAMPLES=OFF \
-    -D INSTALL_PYTHON_EXAMPLES=OFF \
+    && cmake -G "Unix Makefiles" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_LIST=core,imgproc,imgcodecs,photo,calib3d \
+    -DBUILD_opencv_apps=OFF \
+    -DBUILD_opencv_java_bindings_generator=OFF \
+    -DBUILD_opencv_python3=OFF \
+    -DBUILD_opencv_python_bindings_generator=OFF \
+    -DBUILD_opencv_python_tests=OFF \
+    -DBUILD_EXAMPLES=OFF \
+    -DBUILD_DOCS=OFF \
+    -DBUILD_JAVA=OFF \
+    -DBUILD_JPEG=ON \
+    -DBUILD_IPP_IW=OFF \
+    -DBUILD_ITT=OFF \
+    -DBUILD_PERF_TESTS=OFF \
+    -DBUILD_PNG=ON \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DBUILD_TESTS=OFF \
+    -DBUILD_TIFF=ON \
+    -DBUILD_WEBP=OFF \
+    -DBUILD_ZLIB=OFF \
+    -DINSTALL_C_EXAMPLES=OFF \
+    -DINSTALL_PYTHON_EXAMPLES=OFF \
+    -DWITH_EIGEN=OFF \
+    -DWITH_FFMPEG=OFF \
+    -DWITH_IPP=OFF \
+    -DWITH_ITT=OFF \
+    -DWITH_JPEG=ON \
+    -DWITH_LAPACK=OFF \
+    -DWITH_MATLAB=OFF \
+    -DWITH_OPENCL=OFF \
+    -DWITH_OPENEXR=OFF \
+    -DWITH_OPENGL=OFF \
+    -DWITH_PNG=ON \
+    -DWITH_QT=OFF \
+    -DWITH_TBB=OFF \
+    -DWITH_TIFF=ON \
+    -DWITH_V4L=OFF \
+    -DWITH_WEBP=OFF \
     .. \
-    && cmake --build . -j4 \
+    && cmake --build . -j$(grep -c ^processor /proc/cpuinfo) \
     && cmake --build . --target install
 
 ENV OpenCV_DIR=/home/opencv-3.4.9/build
