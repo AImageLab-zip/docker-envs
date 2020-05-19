@@ -1,4 +1,4 @@
-FROM dhealth/eddl-toolkit:v0.4.2
+FROM dhealth/eddl-toolkit:v0.4.3
 # eddl-toolkit has eddl, git, cmake, make
 
 #needed curl, openslide
@@ -16,7 +16,7 @@ RUN apt install -y openslide-tools curl \
     && cmake \
     -D BUILD_SHARED_LIBS=OFF \
     -D CMAKE_INSTALL_PREFIX=`pwd`/install \
-    -D BUILD_LIST=core,imgproc,imgcodecs,photo \
+    -D BUILD_LIST=core,imgproc,imgcodecs,photo,calib3d \
     -D BUILD_opencv_java_bindings_generator=OFF \
     -D BUILD_opencv_python3=OFF \
     -D BUILD_opencv_python_bindings_generator=OFF \
