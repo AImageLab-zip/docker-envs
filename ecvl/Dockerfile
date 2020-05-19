@@ -1,4 +1,4 @@
-FROM dhealth/eddl-toolkit:v0.4.3
+FROM dhealth/eddl-toolkit:0.4.3
 # eddl-toolkit has eddl, git, cmake, make
 
 #needed curl, openslide
