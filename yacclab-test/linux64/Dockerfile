@@ -1,4 +1,4 @@
-FROM pritt/opencv-small:latest
+FROM aimagelab/opencv-small:latest
 
 # Download dataset
 RUN echo "\n\n------------------------------------------> Download of YACCLAB reduced datasets" && \
