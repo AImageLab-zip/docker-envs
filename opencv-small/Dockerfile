@@ -55,6 +55,8 @@ RUN wget -q --show-progress --progress=bar:force https://github.com/opencv/openc
     -DWITH_TIFF=ON \
     -DWITH_V4L=OFF \
     -DWITH_WEBP=OFF \
+    -DWITH_ADE=OFF \
+    -DBUILD_opencv_gapi=OFF \
     .. \
     && cmake --build . --config Release --parallel $NUM_CORES \
     && cmake --build . --config Release --target install \
