@@ -2,17 +2,19 @@ FROM nvidia/cuda:11.4.1-devel-ubuntu20.04
 
 WORKDIR /home
 
-# cmake 3.13.4
+ARG CMAKE_VER=3.25.1
+
 RUN apt-get update && apt-get install -y wget \
-    && wget https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.sh \
+	&& wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VER/cmake-$CMAKE_VER-Linux-x86_64.sh \
       -q -O /tmp/cmake-install.sh \
     && chmod u+x /tmp/cmake-install.sh \
-    && mkdir /home/cmake-3.13.4 \
-    && /tmp/cmake-install.sh --skip-license --prefix=/home/cmake-3.13.4 \
+    && mkdir /cmake-$CMAKE_VER \
+    && /tmp/cmake-install.sh --skip-license --prefix=/cmake-$CMAKE_VER \
     && rm /tmp/cmake-install.sh \
-    && update-alternatives --install /usr/bin/cmake cmake /home/cmake-3.13.4/bin/cmake 10 \
-    && update-alternatives --install /usr/bin/ctest ctest /home/cmake-3.13.4/bin/ctest 10 \
-    && update-alternatives --install /usr/bin/cpack cpack /home/cmake-3.13.4/bin/cpack 10 
+    && update-alternatives --install /usr/bin/cmake cmake /cmake-$CMAKE_VER/bin/cmake 100 \
+    && update-alternatives --install /usr/bin/ctest ctest /cmake-$CMAKE_VER/bin/ctest 100 \
+    && update-alternatives --install /usr/bin/cpack cpack /cmake-$CMAKE_VER/bin/cpack 100
+	
     
 # opencv 4.4 (and contrib for CUDA)
 RUN mkdir opencv \
@@ -24,8 +26,8 @@ RUN mkdir opencv \
     && tar -xvzf opencv/contrib/4.4.0.tar.gz -C opencv/contrib \
     && rm opencv/contrib/4.4.0.tar.gz \
     && cd opencv/opencv-4.4.0 \
-    && mkdir gcc9_static_bin_cuda \
-    && cd gcc9_static_bin_cuda \
+    && mkdir gcc_static_bin_cuda \
+    && cd gcc_static_bin_cuda \
     && cmake \
         -D WITH_CUDA=ON \
         -D BUILD_LIST=core,imgcodecs,imgproc,features2d,cudev,cudaarithm,cudafilters,cudafeatures2d,cudawarping \
@@ -40,4 +42,4 @@ RUN mkdir opencv \
     && cmake --build . --target install
 
 # install tools
-RUN apt-get install -y unzip gnuplot
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y unzip gnuplot
